@@ -1,4 +1,6 @@
-﻿namespace LibraryMAUIProject
+﻿using LibraryMAUIProject.Components.Pages;
+
+namespace LibraryMAUIProject
 {
 	public partial class App : Application
 	{
@@ -6,7 +8,10 @@
 		{
 			InitializeComponent();
 
-			MainPage = new MainPage();
-		}
+            MainPage = new MainPage();
+
+            //Routing.RegisterRoute(nameof(LogIn), typeof(LogIn));
+            //Routing.RegisterRoute(nameof(Weather), typeof(Weather));
+        }
 	}
 }

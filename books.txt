@@ -1,5 +1,20 @@
-1;To Kill A Mockingbird;Harper Lee;1
-2;Catcher In The Rye;J. D. Salinger;1
-3;1984;George Orwell;1
-4;Communism Opposing Viewpoints;Bruno Leone;1
-5;Brave New World;Aldous Huxley;0
+1,To Kill A Mockingbird,Harper Lee,1
+2,Catcher In The Rye,J. D. Salinger,1
+3,1984,George Orwell,1
+4,Communism Opposing Viewpoints,Bruce Leone,1
+5,Brave New World,Aldous Huxley,1
+6,Frankenstein,Mary Shelley,1
+7,Pride and Prejudice,Jane Austen,1
+8,Little Women,Louisa May Alcott,1
+9,Fahrenheit 451,Ray Bradbury,1
+10,Animal Farm, George Orwell,1
+11,A Christmas Carol, Charles Dickens,1
+12,Dracula,Bram Stoker,1
+13,Death of a Salesman,Arthur Miller,1
+14,The Picture of Dorian Gray,Oscar Wilde,1
+15,The Great Gatsby,F. Scott Fitzgerald,1
+16,Moby-Dick,Herman Melville,1
+17,Don Quixote,Miguel de Cervantes,1
+18,Lord of the Flies,William Golding,1
+19,The Scarlet Letter,Nathaniel Hawthorne,1
+20,A Tale of Two Cities,Charles Dickens,1

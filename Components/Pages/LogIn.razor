@@ -1,7 +1,160 @@
-﻿@page "/login"
+﻿@using MySqlConnector;
+@page "/login"
 
-<h1>Log In</h1>
+<h1>Welcome!</h1>
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="input-group mb-3">
+                <!-- Input field for username -->
+                <input type="text" class="form-control" @bind="@username" placeholder="Username" />
+            </div>
+            <div class="input-group mb-3">
+                <!-- Input field for password -->
+                <input type="text" class="form-control" @bind="@password" placeholder="Password" />
+            </div>
+            <div class="input-group mb-3">
+                <!-- Button to add new todo items -->
+                <button class="btn btn-primary" type="button" @onclick="SignIn">Log In</button>
+                <button class="btn btn-primary" type="button" @onclick="SignIn">Sign Up</button>
+            </div>
+            <div>
+                <!-- Button to add new todo items -->
+                <input type="text" class="form-control" @bind="@message" placeholder="Message" />
+            </div>
+        </div>
+    </div>
+</div>
 
 @code {
+    private User[]? userInfo;
 
+    // String variable to store the text of the new todo item
+    public int username = 0;
+    // String variable to store the text of the new todo item
+    public string password = "";
+    //<h2 @bind="@message"></h2>
+    public string message = "Placeholder";
+
+    //public bool validUser = false;
+    //public bool validPass = false;
+
+
+    // Function to add new todo items
+    private void GetUserInfo()
+    {
+
+        MySqlConnectionStringBuilder builder =
+               new MySqlConnectionStringBuilder
+                   {
+                       // Set the server address to "localhost"
+                       Server = "localhost",
+                       // Set the user ID to "root"
+                       UserID = "root",
+                       // Set the password to "OOP2@"
+                       Password = "Iforgot100",
+                       // Set the database name to "demo1"
+                       Database = "librarydatabase",
+                   };
+
+        MySqlConnection connection = new MySqlConnection(builder.ConnectionString);
+
+        connection.Open();
+
+        string sql = "SELECT * FROM users";
+
+        MySqlCommand command = new MySqlCommand(sql, connection);
+
+        List<User> list = new List<User>();
+
+        using (MySqlDataReader reader = command.ExecuteReader())
+        {
+            while (reader.Read())
+            {
+                int id = reader.GetInt32(0);
+                string pass = reader.GetString(1);
+                string name = reader.GetString(2);
+                string phone = reader.GetString(3);
+
+                list.Add(new User(id, pass, name, phone));
+            }
+            userInfo = list.ToArray();
+        }
+        connection.Close();
+    }
+    /*
+    private void SignUp()
+    {
+        MySqlConnectionStringBuilder builder =
+               new MySqlConnectionStringBuilder
+                   {
+                       // Set the server address to "localhost"
+                       Server = "localhost",
+                       // Set the user ID to "root"
+                       UserID = "root",
+                       // Set the password to "OOP2@"
+                       Password = "Iforgot100",
+                       // Set the database name to "demo1"
+                       Database = "librarydatabase",
+                   };
+
+        MySqlConnection connection = new MySqlConnection(builder.ConnectionString);
+
+        connection.Open();
+
+        string sql = $"INSERT INTO users (userID, password, name, phone) VALUES ({} {} {} {})";
+
+
+
+    }
+    */
+    private void SignIn()
+    {
+        GetUserInfo();
+
+        User test = new User(0,"a","a","a");
+
+        foreach (var user in userInfo)
+        {
+            if (user.UserID == username)
+            {
+                test = user;
+                if (user.Password == password)
+                {
+                    message = $"Welcome {user.Name}";
+
+                    SuccessLogIn();
+                }
+                else
+                {
+                    message = "Wrong password";
+                }
+                break;
+            }
+            else
+            {
+                message = "User does not exist";
+            }
+        }
+
+
+
+
+    }
+
+    public async Task SuccessLogIn()
+    {
+
+        await Shell.Current.GoToAsync("//WeatherPage");
+    }
+    /*
+    private class User
+    {
+        public string UserID { get; set; }
+        public string Password { get; set; }
+        public string Name { get; set; }
+        public string PhoneNumber { get; set; }
+    }
+    */
 }
