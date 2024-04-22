@@ -1,0 +1,5 @@
+1;To Kill A Mockingbird;Harper Lee;1
+2;Catcher In The Rye;J. D. Salinger;1
+3;1984;George Orwell;1
+4;Communism Opposing Viewpoints;Bruno Leone;1
+5;Brave New World;Aldous Huxley;0
