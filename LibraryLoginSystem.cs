@@ -34,6 +34,10 @@ namespace LibraryMAUIProject
 
         private void CustomerMenu()
         {
+            CustomerOptions.CheckBookInfo();
+
+            CustomerOptions.RentBooks();
+
 
         }
 

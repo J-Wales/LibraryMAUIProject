@@ -14,9 +14,18 @@ namespace LibraryMAUIProject
         {
             string filePath = "Customer_Data.csv";
 
+            var connectionString = new MySqlConnectionStringBuilder
+            {
+                Server = "localhost",
+                UserID = "root",
+                Password = "DarkWolf", // Change the password to whatever you have it set to
+                Database = "library"
+
+            };
+
             WriteToCsv(filePath);
 
-            AddDataToDatabase(filePath);
+            AddDataToDatabase(filePath, connectionString.ConnectionString);
         }
 
         static void WriteToCsv(string filePath)
@@ -45,7 +54,7 @@ namespace LibraryMAUIProject
             }
         }
 
-        static void AddDataToDatabase(string filePath)
+        static void AddDataToDatabase(string filePath, string connectionString)
         {
             using (StreamReader reader = new StreamReader(filePath))
             {
@@ -56,18 +65,18 @@ namespace LibraryMAUIProject
                 {
                     string[] fields = line.Split(',');
 
-                    AddCustomerToDatabase(fields[0], fields[1], fields[2], fields[3]);
+                    AddCustomerToDatabase(fields[0], fields[1], fields[2], fields[3], connectionString);
                 }
             }
         }
 
-        static void AddCustomerToDatabase(string customerId, string password, string name, string phoneNumber)
+        static void AddCustomerToDatabase(string customerId, string password, string name, string phoneNumber, string connectionString)
         {
 
 
             Console.WriteLine($"Adding customer to database: CustoemrID: {customerId}, Name: {name}, PhoneNumber: {phoneNumber}");
 
-            string connectionString = "";
+            
             string query = "INSERT INTO customers (customerID, custPassword, custName, PhoneNumber)" +
                    "VALUES (@customerID, @custPassword, @custName, @PhoneNumber)";
 
