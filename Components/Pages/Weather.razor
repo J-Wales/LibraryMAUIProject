@@ -5,7 +5,7 @@
 
 <p>This component demonstrates showing data.</p>
 
-@if (forecasts == null)
+@if (books == null)
 {
     <p><em>Loading...</em></p>
 }
@@ -20,13 +20,13 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var forecast in forecasts)
+            @foreach (var book in books)
             {
                 <tr>
-                    <td>@forecast.ID</td>
-                    <td>@forecast.Title</td>
-                    <td>@forecast.Author</td>
-                    <button class="btn btn-primary" type="button" @onclick="AddCart">Rent</button>
+                    <td>@book.bookID</td>
+                    <td>@book.Title</td>
+                    <td>@book.Author</td>
+                    <button class="btn btn-primary" type="button" @onclick="() => AddCart(book)">Rent</button>
                 </tr>
             }
         </tbody>
@@ -34,14 +34,7 @@ else
 }
 
 @code {
-    private WeatherForecast[]? forecasts;
-    user 
-
-    public void BookPage(Program program)
-    {
-        this.program = program;
-    }
-    public Cart cart = new Cart();
+    private Book[]? books;
 
     protected override async Task OnInitializedAsync()
     {
@@ -80,7 +73,7 @@ else
 
         MySqlCommand command = new MySqlCommand(sql, connection);
 
-        List<WeatherForecast> list = new List<WeatherForecast>();
+        List<Book> list = new List<Book>();
         
         using (MySqlDataReader reader = command.ExecuteReader())
         {
@@ -99,18 +92,18 @@ else
 
                 if (available == 1)
                 {
-                    list.Add(new WeatherForecast { ID = id, Title = title, Author = author, Available = available });
+                    list.Add(new Book(id, title, author, available));
                 }
                 //  -5, -20, and -10 specify the minimum width of each column, and the negative sign indicates left alignment
             }
         }
 
-        forecasts = list.ToArray();
+        books = list.ToArray();
 
         connection.Close();
 
     }
-    public void AddCart()
+    public void AddCart(Book book)
     {
         MySqlConnectionStringBuilder builder =
                new MySqlConnectionStringBuilder
@@ -135,21 +128,5 @@ else
         MySqlCommand command = new MySqlCommand(sql, connection);
 
         command.ExecuteNonQuery();
-
-    }
-
-    private class WeatherForecast
-    {
-        /*
-        public DateOnly Date { get; set; }
-        public int TemperatureC { get; set; }
-        public string? Summary { get; set; }
-        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-        */
-
-        public int ID { get; set; }
-        public string Title { get; set; }
-        public string Author { get; set; }
-        public int Available { get; set; }
     }
 }
