@@ -1,7 +1,6 @@
 ﻿@using MySqlConnector;
 @page "/"
 
-
 <h1>Welcome!</h1>
 
 <div class="container mt-4">
@@ -16,7 +15,7 @@
                 <input type="text" class="form-control" @bind="@password" placeholder="Password" />
             </div>
             <div class="input-group mb-3">
-                <!-- Button to add new todo items -->
+                <!-- Button to sign in -->
                 <button class="btn btn-primary" type="button" @onclick="SignIn">Log In</button>
             </div>
             <div>
@@ -45,73 +44,24 @@
 </div>
 
 @code {
-    private User[]? userInfo;
+    sqlHandler handler = new sqlHandler();
 
-    // String variable to store the text of the new todo item
+    // int variable to store the text of the username
     public int? username = null;
-    // String variable to store the text of the new todo item
+    // String variable to store the text of the password
     public string password = "";
-    //<h2 @bind="@message"></h2>
+
     public string? message;
 
     internal static User user;
 
-
-    //public bool validUser = false;
-    //public bool validPass = false;
-
-    // Function to add new todo items
-    private void GetUserInfo()
-    {
-
-        MySqlConnectionStringBuilder builder =
-               new MySqlConnectionStringBuilder
-                   {
-                       // Set the server address to "localhost"
-                       Server = "localhost",
-                       // Set the user ID to "root"
-                       UserID = "root",
-                       // Set the password to "OOP2@"
-                       Password = "Iforgot100",
-                       // Set the database name to "demo1"
-                       Database = "librarydatabase",
-                   };
-
-        MySqlConnection connection = new MySqlConnection(builder.ConnectionString);
-
-        connection.Open();
-
-        string sql = "SELECT * FROM users";
-
-        MySqlCommand command = new MySqlCommand(sql, connection);
-
-        List<User> list = new List<User>();
-
-        using (MySqlDataReader reader = command.ExecuteReader())
-        {
-            while (reader.Read())
-            {
-                int id = reader.GetInt32(0);
-                string pass = reader.GetString(1);
-                string name = reader.GetString(2);
-                string phone = reader.GetString(3);
-
-                list.Add(new User(id, pass, name, phone));
-            }
-            userInfo = list.ToArray();
-        }
-        connection.Close();
-    }
-
     private void SignIn()
     {
-        GetUserInfo();
-
-        foreach (var currentUser in userInfo)
+        foreach (var curUser in handler.users)
         {
-            if (currentUser.UserID == username)
+            if (curUser.UserID == username)
             {
-                user = currentUser;
+                user = curUser;
                 if (user.Password == password)
                 {
                     message = $"Welcome {user.Name}";

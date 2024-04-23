@@ -57,12 +57,12 @@ else
     {
         bool a = false;
         int rID = 0;
-        foreach (var rental in handler.rentals)
+        foreach (var rent in handler.rentals)
         {
-            if (rental.UserID == currentUser.UserID)
+            if (rent.UserID == currentUser.UserID)
             {
                 a = true;
-                rID = rental.RentalID;
+                rID = rent.RentalID;
             }
         }
 
@@ -74,10 +74,11 @@ else
             {
                 rID = rnd.Next(2000, 3000);
             }
-
+            Rental rental = new Rental(rID, currentUser.UserID);
+            rental.toTable();
         }
-        RentalBook newRentalBook = new RentalBook(rID, book.bookID);
 
+        RentalBook newRentalBook = new RentalBook(rID, book.bookID);
         newRentalBook.toTable();
 
         book.Available = 0;
