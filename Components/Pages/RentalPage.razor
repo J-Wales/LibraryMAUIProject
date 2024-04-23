@@ -1,17 +1,87 @@
-﻿@inject UserService UserService
+﻿@using MySqlConnector;
 @page "/rental"
 <h3>Rental</h3>
 
 <div>
-	<p>Welcome, @currentUser!</p>
+	<p>Welcome, @currentUser.Name!</p>
 </div>
 
-@code {
-	private string currentUser;
 
-	protected override void OnInitialized()
-	{
-		// Access the current user from the UserService
-		currentUser = UserService.CurrentUser;
-	}
+@if (books == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Author</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var book in books)
+            {
+                <tr>
+                    <td>@book.bookID</td>
+                    <td>@book.Title</td>
+                    <td>@book.Author</td>
+                    <button class="btn btn-primary" type="button" @onclick="() => Return(book)">Return</button>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    User currentUser = LogIn.user;
+
+    int rID;
+
+    List<Book> books = new List<Book>();
+
+    sqlHandler handler = new sqlHandler();
+
+    protected override void OnInitialized()
+    {
+        foreach (var rental in handler.rentals)
+        {
+            if (rental.UserID == currentUser.UserID)
+            {
+                rID = rental.RentalID;
+            }
+        }
+
+        foreach (var rentalbook in handler.rentalbooks)
+        {
+            if (rentalbook.rentalID == rID)
+            {
+                foreach (var book in handler.books)
+                {
+                    if (book.bookID == rentalbook.bookID)
+                    {
+                        books.Add(book);
+                    }
+                }
+            }
+        }
+
+    }
+
+    public void Return(Book book)
+    {
+        foreach (var rbook in handler.rentalbooks)
+        {
+            if (rbook.rentalID == rID && rbook.bookID == book.bookID)
+            {
+                rbook.Remove();
+            }
+        }
+        book.Available = 1;
+        book.Update();
+
+
+    }
 }

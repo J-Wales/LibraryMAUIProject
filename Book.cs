@@ -55,32 +55,5 @@ namespace LibraryMAUIProject
 
             connection.Close();
         }
-
-        public void toTable()
-        {
-            MySqlConnectionStringBuilder builder =
-                   new MySqlConnectionStringBuilder
-                   {
-                       // Set the server address to "localhost"
-                       Server = "localhost",
-                       // Set the user ID to "root"
-                       UserID = "root",
-                       // Set the password to "OOP2@"
-                       Password = "Iforgot100",
-                       // Set the database name to "demo1"
-                       Database = "librarydatabase",
-                   };
-
-            MySqlConnection connection = new MySqlConnection(builder.ConnectionString);
-
-            connection.Open();
-
-            string sql = $"INSERT INTO books (bookID, title, author, available) VALUES ({bookID},'{Title}','{Author}',{Available})";
-            MySqlCommand command = new MySqlCommand(sql, connection);
-
-            command.ExecuteNonQuery();
-
-            connection.Close();
-        }
     }
 }
