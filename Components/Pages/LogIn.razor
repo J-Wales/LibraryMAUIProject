@@ -23,19 +23,23 @@
                 {
                     if (message == "bad user")
                     {
+                        <!-- Display message for invalid user -->
                         <p>User does not exist</p>
                     }
                     if (message == "bad pass")
                     {
+                        <!-- Display message for incorrect password -->
                         <p>Password is incorrect</p>
                     }
                     if (message == "good login")
                     {
+                        <!-- Display welcome message for successful login -->
                         <p>Welcome @user.Name"</p>
                     }
                 }
                 else
                 {
+                    <!-- Empty paragraph to handle rendering -->
                     <p></p>
                 }
             </div>
@@ -44,17 +48,18 @@
 </div>
 
 @code {
-    sqlHandler handler = new sqlHandler();
+    sqlHandler handler = new sqlHandler(); // SQL handler instance
 
     // int variable to store the text of the username
     public int? username = null;
     // String variable to store the text of the password
     public string password = "";
 
-    public string? message;
+    public string? message; // Message to display login status
 
-    internal static User user;
+    internal static User user; // Current user object
 
+    // Method to handle sign-in button click
     private void SignIn()
     {
         foreach (var curUser in handler.users)
@@ -64,17 +69,17 @@
                 user = curUser;
                 if (user.Password == password)
                 {
-                    message = $"Welcome {user.Name}";
+                    message = $"Welcome {user.Name}"; // Set welcome message for successful login
                 }
                 else
                 {
-                    message = "bad pass";
+                    message = "bad pass"; // Set message for incorrect password
                 }
                 break;
             }
             else
             {
-                message = "bad user";
+                message = "bad user"; // Set message for invalid user
             }
         }
     }
