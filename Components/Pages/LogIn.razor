@@ -1,5 +1,7 @@
 ﻿@using MySqlConnector;
 @page "/login"
+@inject NavigationManager NavigationManager
+@inject UserService UserService
 
 <h1>Welcome!</h1>
 
@@ -128,6 +130,7 @@
 
     }
     */
+
     private void SignIn()
     {
         GetUserInfo();
@@ -163,7 +166,7 @@
     public async Task SuccessLogIn()
     {
 
-        await Shell.Current.GoToAsync("//WeatherPage");
+        await NavigationManager.NavigateTo("/rental");
     }
     /*
     private class User

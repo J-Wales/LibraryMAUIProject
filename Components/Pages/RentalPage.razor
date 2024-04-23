@@ -1,32 +1,17 @@
-﻿@using MySqlConnector;
-@page "/cart"
-<h3>Cart</h3>
+﻿@inject UserService UserService
+@page "/rental"
+<h3>Rental</h3>
 
-@if (books == null)
-{
-    <p><em>No Items in Cart!</em></p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Author</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var book in Cart.books)
-            {
-                <tr>
-                    <td>@book.Title</td>
-                    <td>@book.Author</td>
-                    <button class="btn btn-primary" type="button">Remove</button>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+<div>
+	<p>Welcome, @currentUser!</p>
+</div>
 
 @code {
+	private string currentUser;
+
+	protected override void OnInitialized()
+	{
+		// Access the current user from the UserService
+		currentUser = UserService.CurrentUser;
+	}
 }
