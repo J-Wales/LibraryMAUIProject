@@ -1,17 +1,17 @@
-﻿@using MySqlConnector; <!-- Importing the MySqlConnector namespace for database access -->
-@page "/rental" <!-- Declaring the name/route for this page -->
+﻿@using MySqlConnector;
+@page "/rental"
 <h3>Rental</h3>
 
 <div>
-	<p>Welcome, @currentUser.Name!</p> <!-- Displays the current user and a welcome message -->
+	<p>Welcome, @currentUser.Name!</p>
 </div>
 
 
-@if (books == null) <!-- Checks if the books list is still loading -->
+@if (books == null)
 {
     <p><em>Loading...</em></p>
 }
-else <!-- Displays the table of books -->
+else
 {
     <table class="table">
         <thead>
@@ -22,13 +22,13 @@ else <!-- Displays the table of books -->
             </tr>
         </thead>
         <tbody>
-            @foreach (var book in books) <!-- Iterating over the list of  books -->
+            @foreach (var book in books)
             {
                 <tr>
-                    <td>@book.bookID</td> <!-- Displays the books ID -->
-                    <td>@book.Title</td> <!-- Displays the books Title -->
-                    <td>@book.Author</td> <!-- Displays the books Author -->
-                    <button class="btn btn-primary" type="button" @onclick="() => Return(book)">Return</button> <!-- adds a button to return a book -->
+                    <td>@book.bookID</td>
+                    <td>@book.Title</td>
+                    <td>@book.Author</td>
+                    <button class="btn btn-primary" type="button" @onclick="() => Return(book)">Return</button>
                 </tr>
             }
         </tbody>
@@ -36,33 +36,33 @@ else <!-- Displays the table of books -->
 }
 
 @code {
-    User currentUser = LogIn.user; <!-- gets the current user from the LogIn page -->
+    User currentUser = LogIn.user;
 
-    int rID; <!-- Declares the variable to store the rental ID -->
+    int rID;
 
-    List<Book> books = new List<Book>(); <!-- declaring the list to store the books -->
+    List<Book> books = new List<Book>();
 
-    sqlHandler handler = new sqlHandler(); <!-- creating an instance of sqlHandler class for databse access -->
+    sqlHandler handler = new sqlHandler();
 
-    protected override void OnInitialized() <!-- Method called when the component is initialized -->
+    protected override void OnInitialized()
     {
-        foreach (var rental in handler.rentals) <!-- Loops through the rentals -->
+        foreach (var rental in handler.rentals)
         {
-            if (rental.UserID == currentUser.UserID) <!-- finding the rental ID for the current user -->
+            if (rental.UserID == currentUser.UserID)
             {
                 rID = rental.RentalID;
             }
         }
 
-        foreach (var rentalbook in handler.rentalbooks) <!-- Loops through the rental books -->
+        foreach (var rentalbook in handler.rentalbooks)
         {
-            if (rentalbook.rentalID == rID) <!-- checks if the rental ID matches the current rental ID -->
+            if (rentalbook.rentalID == rID)
             {
-                foreach (var book in handler.books) <!-- loops through the books -->
+                foreach (var book in handler.books)
                 {
-                    if (book.bookID == rentalbook.bookID) <!-- finding the books associated with the current rental --.
+                    if (book.bookID == rentalbook.bookID)
                     {
-                        books.Add(book); <!-- adding the book to the list of books -->
+                        books.Add(book);
                     }
                 }
             }
@@ -70,17 +70,17 @@ else <!-- Displays the table of books -->
 
     }
 
-    public void Return(Book book) <!-- method to return a book -->
+    public void Return(Book book)
     {
-        foreach (var rbook in handler.rentalbooks) <!-- Looping through the rental books -->
+        foreach (var rbook in handler.rentalbooks)
         {
-            if (rbook.rentalID == rID && rbook.bookID == book.bookID) <!-- Finds the rental book to remove -->
+            if (rbook.rentalID == rID && rbook.bookID == book.bookID)
             {
-                rbook.Remove(); <!-- removes the rental book -->
+                rbook.Remove();
             }
         }
-        book.Available = 1; <!-- sets the book as available -->
-        book.Update(); <!-- updating the book in the database -->
-        books.Remove(book); <!-- removing the book from the list of books -->
+        book.Available = 1;
+        book.Update();
+        books.Remove(book);
     }
 }
