@@ -1,5 +1,5 @@
 ﻿@using MySqlConnector;
-@page "/library"
+@page "/library" 
 
 <h1>Books</h1>
 
@@ -37,26 +37,34 @@ else
 }
 
 @code {
-
+    // Initialize the SQL handler
     sqlHandler handler = new sqlHandler();
+
+    // Declare a nullable array to store books
     public Book[]? books;
 
+    // Get the current user from the LogIn page
     User currentUser = LogIn.user;
 
-
+    // Method called when the component is initialized
     protected override async Task OnInitializedAsync()
     {
         // Simulate asynchronous loading to demonstrate a loading indicator
         await Task.Delay(500);
 
+        // Load books from the handler
         books = handler.books;
 
 
     }
+
+    // Method to rent a book
     public void Rent(Book book)
     {
         bool a = false;
         int rID = 0;
+
+        // Check if the user has any existing rentals
         foreach (var rent in handler.rentals)
         {
             if (rent.UserID == currentUser.UserID)
@@ -66,6 +74,7 @@ else
             }
         }
 
+        // If user has no existing rentals, generate a new rental ID
         if (a == false)
         {
             Random rnd = new Random();
@@ -77,14 +86,20 @@ else
             Rental rental = new Rental(rID, currentUser.UserID);
             rental.toTable();
         }
-
+        // Create a new rental book and add it to the database
         RentalBook newRentalBook = new RentalBook(rID, book.bookID);
         newRentalBook.toTable();
 
+        // Set the book as unavailable and update it in the database
         book.Available = 0;
         book.Update();
-    }
 
+        }
+
+        
+    
+
+    // Method to check if a rental ID already exists
     public bool CheckExists(int id)
     {
         bool exists = false;

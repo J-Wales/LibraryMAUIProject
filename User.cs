@@ -8,13 +8,16 @@ namespace LibraryMAUIProject
 {
     public class User
     {
-        public int UserID { get; set; }
-        public string Password { get; set; }
-        public string Name { get; set; }
-        public string PhoneNumber { get; set; }
+        // Properties of the User class
+        public int UserID { get; set; } // ID of the user
+        public string Password { get; set; } // Password of the user
+        public string Name { get; set; } // Name of the user
 
-        public char Type { get; set; }
+        public string PhoneNumber { get; set; } // Phone number of the user
 
+        public char Type { get; set; } // Type of user: 'L' for librarian, 'C' for customer
+
+        // Constructor to initialize User object
         public User(int UserID, string Password, string Name, string PhoneNumber)
         {
             this.UserID = UserID;
@@ -22,18 +25,19 @@ namespace LibraryMAUIProject
             this.Name = Name;
             this.PhoneNumber = PhoneNumber;
 
-            SetType();
+            SetType(); // Determine the type of user based on UserID
         }
 
+        // Method to set the Type property based on UserID
         public void SetType()
         {
-            if (UserID > 4999)
+            if (UserID > 4999) // Librarian IDs start from 5000
             {
-                Type = 'L';
+                Type = 'L'; // Set Type to 'L' for librarian
             }
             else
             {
-                Type = 'C';
+                Type = 'C'; // Set Type to 'C' for customer
             }
         }
     }
