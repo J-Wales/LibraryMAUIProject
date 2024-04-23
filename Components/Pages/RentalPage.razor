@@ -7,7 +7,7 @@
 </div>
 
 
-@if (books == null)
+@if (rentedBooks == null)
 {
     <p><em>Loading...</em></p>
 }
@@ -22,7 +22,7 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var book in books)
+            @foreach (var book in rentedBooks)
             {
                 <tr>
                     <td>@book.bookID</td>
@@ -40,12 +40,13 @@ else
 
     int rID;
 
-    List<Book> books = new List<Book>();
+    public static List<Book> rentedBooks = new List<Book>();
 
     sqlHandler handler = new sqlHandler();
 
     protected override void OnInitialized()
     {
+        rentedBooks.Clear();
         foreach (var rental in handler.rentals)
         {
             if (rental.UserID == currentUser.UserID)
@@ -62,7 +63,7 @@ else
                 {
                     if (book.bookID == rentalbook.bookID)
                     {
-                        books.Add(book);
+                        rentedBooks.Add(book);
                     }
                 }
             }
@@ -81,6 +82,6 @@ else
         }
         book.Available = 1;
         book.Update();
-        books.Remove(book);
+        rentedBooks.Remove(book);
     }
 }

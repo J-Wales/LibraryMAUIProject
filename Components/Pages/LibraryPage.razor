@@ -1,0 +1,99 @@
+﻿@using MySqlConnector;
+@page "/library"
+
+<h1>Books</h1>
+
+<p>This component demonstrates showing data.</p>
+
+@if (books == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Author</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var book in books)
+            {
+                if (book.Available == 1)
+                {
+                    <tr>
+                        <td>@book.bookID</td>
+                        <td>@book.Title</td>
+                        <td>@book.Author</td>
+                        <button class="btn btn-primary" type="button" @onclick="() => Rent(book)">Rent</button>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+
+    sqlHandler handler = new sqlHandler();
+    public Book[]? books;
+
+    User currentUser = LogIn.user;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Simulate asynchronous loading to demonstrate a loading indicator
+        await Task.Delay(500);
+
+        books = handler.books;
+
+
+    }
+    public void Rent(Book book)
+    {
+        bool a = false;
+        int rID = 0;
+        foreach (var rental in handler.rentals)
+        {
+            if (rental.UserID == currentUser.UserID)
+            {
+                a = true;
+                rID = rental.RentalID;
+            }
+        }
+
+        if (a == false)
+        {
+            Random rnd = new Random();
+            rID = rnd.Next(2000, 3000);
+            while (CheckExists(rID) == true)
+            {
+                rID = rnd.Next(2000, 3000);
+            }
+
+        }
+        RentalBook newRentalBook = new RentalBook(rID, book.bookID);
+
+        newRentalBook.toTable();
+
+        book.Available = 0;
+        book.Update();
+    }
+
+    public bool CheckExists(int id)
+    {
+        bool exists = false;
+        foreach (var rental in handler.rentals)
+        {
+            if (rental.RentalID == id)
+            {
+                exists = true;
+            }
+        }
+        return exists;
+    }
+}
