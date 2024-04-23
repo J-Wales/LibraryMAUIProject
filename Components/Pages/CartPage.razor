@@ -1,0 +1,32 @@
+﻿@using MySqlConnector;
+@page "/cart"
+<h3>Cart</h3>
+
+@if (books == null)
+{
+    <p><em>No Items in Cart!</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var book in Cart.books)
+            {
+                <tr>
+                    <td>@book.Title</td>
+                    <td>@book.Author</td>
+                    <button class="btn btn-primary" type="button">Remove</button>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+}

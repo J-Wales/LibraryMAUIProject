@@ -1,7 +1,7 @@
 ﻿@using MySqlConnector;
 @page "/weather"
 
-<h1>Weather</h1>
+<h1>Books</h1>
 
 <p>This component demonstrates showing data.</p>
 
@@ -26,6 +26,7 @@ else
                     <td>@forecast.ID</td>
                     <td>@forecast.Title</td>
                     <td>@forecast.Author</td>
+                    <button class="btn btn-primary" type="button" @onclick="AddCart">Rent</button>
                 </tr>
             }
         </tbody>
@@ -34,6 +35,8 @@ else
 
 @code {
     private WeatherForecast[]? forecasts;
+
+    public Cart cart = new Cart();
 
     protected override async Task OnInitializedAsync()
     {
@@ -73,7 +76,7 @@ else
         MySqlCommand command = new MySqlCommand(sql, connection);
 
         List<WeatherForecast> list = new List<WeatherForecast>();
-
+        
         using (MySqlDataReader reader = command.ExecuteReader())
         {
             while (reader.Read())
@@ -93,14 +96,42 @@ else
                 {
                     list.Add(new WeatherForecast { ID = id, Title = title, Author = author, Available = available });
                 }
-					//  -5, -20, and -10 specify the minimum width of each column, and the negative sign indicates left alignment
-				}
-			}
+                //  -5, -20, and -10 specify the minimum width of each column, and the negative sign indicates left alignment
+            }
+        }
 
-            forecasts = list.ToArray();
+        forecasts = list.ToArray();
 
         connection.Close();
-        
+
+    }
+
+    public void AddCart()
+    {
+        MySqlConnectionStringBuilder builder =
+               new MySqlConnectionStringBuilder
+                   {
+                       // Set the server address to "localhost"
+                       Server = "localhost",
+                       // Set the user ID to "root"
+                       UserID = "root",
+                       // Set the password to "OOP2@"
+                       Password = "Iforgot100",
+                       // Set the database name to "demo1"
+                       Database = "librarydatabase",
+                   };
+
+        MySqlConnection connection =
+       new MySqlConnection(builder.ConnectionString);
+
+        connection.Open();
+
+        string sql = "INSERT INTO rentalbooks (rentalID, bookID) VALUES ()";
+
+        MySqlCommand command = new MySqlCommand(sql, connection);
+
+        command.ExecuteNonQuery();
+
     }
 
     private class WeatherForecast

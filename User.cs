@@ -22,6 +22,11 @@ namespace LibraryMAUIProject
             this.Name = Name;
             this.PhoneNumber = PhoneNumber;
 
+            SetType();
+        }
+
+        public void SetType()
+        {
             if (UserID > 4999)
             {
                 Type = 'L';

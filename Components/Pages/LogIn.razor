@@ -20,8 +20,25 @@
                 <button class="btn btn-primary" type="button" @onclick="SignIn">Sign Up</button>
             </div>
             <div>
-                <!-- Button to add new todo items -->
-                <input type="text" class="form-control" @bind="@message" placeholder="Message" />
+                @if (message != null)
+                {
+                    if (message == "bad user")
+                    {
+                        <p>User does not exist</p>
+                    }
+                    if (message == "bad pass")
+                    {
+                        <p>Password is incorrect</p>
+                    }
+                    if (message == "good login")
+                    {
+                        <p>Welcome @user.Name"</p>
+                    }
+                }
+                else
+                {
+                    <p></p>
+                }
             </div>
         </div>
     </div>
@@ -35,7 +52,9 @@
     // String variable to store the text of the new todo item
     public string password = "";
     //<h2 @bind="@message"></h2>
-    public string message = "Placeholder";
+    public string? message;
+
+    public User user;
 
     //public bool validUser = false;
     //public bool validPass = false;
@@ -113,13 +132,11 @@
     {
         GetUserInfo();
 
-        User test = new User(0,"a","a","a");
-
-        foreach (var user in userInfo)
+        foreach (var currentUser in userInfo)
         {
-            if (user.UserID == username)
+            if (currentUser.UserID == username)
             {
-                test = user;
+                user = currentUser;
                 if (user.Password == password)
                 {
                     message = $"Welcome {user.Name}";
@@ -128,13 +145,13 @@
                 }
                 else
                 {
-                    message = "Wrong password";
+                    message = "bad pass";
                 }
                 break;
             }
             else
             {
-                message = "User does not exist";
+                message = "bad user";
             }
         }
 
