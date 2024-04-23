@@ -128,6 +128,7 @@ namespace LibraryMAUIProject
 
             List<Rental> list = new List<Rental>();
 
+
             using (MySqlDataReader reader = command.ExecuteReader())
             {
                 while (reader.Read())

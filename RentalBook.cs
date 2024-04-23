@@ -65,11 +65,14 @@ namespace LibraryMAUIProject
 
             connection.Open();
 
-            string sql = $"DELETE FROM rentalbooks WHERE rentalID = {rentalID}, bookID = {bookID}";
+            string sql = $"DELETE FROM rentalbooks WHERE rentalID = {rentalID} AND bookID = {bookID}";
 
             MySqlCommand command = new MySqlCommand(sql, connection);
 
-            command.ExecuteNonQuery();
+            using (MySqlDataReader reader = command.ExecuteReader())
+            {
+                reader.Read();
+            }
 
             connection.Close();
 
