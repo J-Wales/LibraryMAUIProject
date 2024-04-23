@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace LibraryMAUIProject
 {
-    internal class AppController
+    public static class AppController
     {
-    }
+		public static User? currentUser;
+
+	}
 }

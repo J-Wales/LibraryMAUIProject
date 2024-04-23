@@ -35,7 +35,12 @@ else
 
 @code {
     private WeatherForecast[]? forecasts;
+    user 
 
+    public void BookPage(Program program)
+    {
+        this.program = program;
+    }
     public Cart cart = new Cart();
 
     protected override async Task OnInitializedAsync()
@@ -105,7 +110,6 @@ else
         connection.Close();
 
     }
-
     public void AddCart()
     {
         MySqlConnectionStringBuilder builder =

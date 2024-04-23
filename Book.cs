@@ -47,8 +47,13 @@ namespace LibraryMAUIProject
 
             connection.Open();
 
-            string sql = $"INSERT INTO books () VALUES ()";
+            string sql = $"UPDATE books SET available = {Available} WHERE bookID = {bookID}";
 
+            MySqlCommand command = new MySqlCommand(sql, connection);
+
+            command.ExecuteNonQuery();
+
+            connection.Close();
         }
 
         public void toTable()
@@ -70,9 +75,12 @@ namespace LibraryMAUIProject
 
             connection.Open();
 
-            string sql = $"INSERT INTO books () VALUES ()";
+            string sql = $"INSERT INTO books (bookID, title, author, available) VALUES ({bookID},'{Title}','{Author}',{Available})";
+            MySqlCommand command = new MySqlCommand(sql, connection);
 
+            command.ExecuteNonQuery();
+
+            connection.Close();
         }
-
     }
 }
